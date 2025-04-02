@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express"
-import { createNewUser, findUser,  } from "../../services/auth/auth"
+import { comparePasswords, createNewUser, findUser, generateToken, hashPassword,  } from "../../services/auth/auth"
 
 const router = Router()
 
@@ -43,16 +43,28 @@ const router = Router()
 router.post('/login',async(req: Request,res : Response)=>{
    try {
     const {body} = req
-    const user = await findUser(body) 
+
+    
+    const user = await findUser(body.email) 
     if(!user){
-         res.status(404).json({message : "User Does Not Exist"})
+        res.status(404).json({message : "User Does Not Exist"})
+   }else{
+
+    const isMatch = await comparePasswords(body.password, user.password);
+    if (!isMatch) {
+         res.status(401).json({ message: "Invalid credentials" });
     }else{
         const sanitizedUser = {
             ...user,
             password: "", // Hide password
         };
+
+        const token = generateToken(sanitizedUser);
+
     
-        res.status(200).json({ message: "Login Successful", sanitizedUser });
+        res.status(200).json({ message: "Login Successful", token });
+    }
+      
     }
     
   
@@ -107,12 +119,21 @@ router.post('/register',async(req,res)=>{
      if(user){
          res.status(404).json({message : "User Already Exists"})
      }else{
-        const newUser = await createNewUser(body)
+        const hashedPassword = await hashPassword(body.password);
+        const newBody  = {
+        ...body,
+        password : hashedPassword
+        }
+        const newUser = await createNewUser(newBody)
+        
      if(!newUser){
         res.status(404).json({message : "Please Try Again Later"})
-     }
+     }else{
+        const token = generateToken(newUser);
 
-     res.status(200).json({ message: "Login Successful", newUser });
+        res.status(200).json({ message: "Login Successful", token });
+     }
+  
      }
      
      

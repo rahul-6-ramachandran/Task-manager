@@ -9,13 +9,14 @@
     "postinstall": "prisma generate --schema=./prisma/schema.prisma"
   },
   "prisma": {
-  "schema": "./prisma/schema.prisma"
+    "schema": "./prisma/schema.prisma"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
     "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.13.17",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
@@ -31,6 +32,9 @@
   },
   "dependencies": {
     "@prisma/client": "^6.5.0",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   }
