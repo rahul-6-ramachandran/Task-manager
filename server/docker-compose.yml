@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  backend:
+    build: .
+    container_name: backend_service
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "postgresql://admin_user:mysecretpassword@db:5432/mydatabase"
+    ports:
+      - "7070:7070"
+    command: ["sh", "-c", "npx prisma migrate deploy && npm run dev"]
+
+  db:
+    image: postgres:15
+    container_name: db_service
+    restart: always
+    environment:
+      POSTGRES_USER: admin_user
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
