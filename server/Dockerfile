@@ -7,13 +7,17 @@ WORKDIR /app
 # Copy package.json and package-lock.json first for better caching
 COPY package*.json ./
 
+COPY prisma ./prisma
 # Install project dependencies
 RUN npm install
 
+RUN npx prisma generate --schema=prisma/schema.prisma
 
-RUN npx prisma generate --no-engine
+# RUN npx prisma generate --no-engine
 # Copy all project files to the container
 COPY . .
+
+
 
 
 

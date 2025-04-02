@@ -3,6 +3,43 @@ import { createNewUser, findUser,  } from "../../services/auth/auth"
 
 const router = Router()
 
+
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: User login
+ *     description: Authenticates a user and returns login success/failure.
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 user:
+ *                   type: object
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
 router.post('/login',async(req: Request,res : Response)=>{
    try {
     const {body} = req
@@ -26,6 +63,43 @@ router.post('/login',async(req: Request,res : Response)=>{
 })
 
 
+
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: User Register
+ *     description: Registers a new user
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 user:
+ *                   type: object
+ *       404:
+ *         description: User Already Exists
+ *       500:
+ *         description: Internal server error
+ */
 router.post('/register',async(req,res)=>{
     try {
      const {body} = req

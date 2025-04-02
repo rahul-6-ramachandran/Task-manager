@@ -20,7 +20,9 @@ services:
       DATABASE_URL: "postgresql://admin_user:mysecretpassword@db:5432/mydatabase"
     ports:
       - "7070:7070"
-    command: ["sh", "-c", "npx prisma migrate deploy && npm run dev"]
+    volumes:
+      - ./prisma:/app/prisma
+    command: ["sh", "-c", "npx prisma migrate deploy --schema=/app/prisma/schema.prisma && npm run dev"]
 
   db:
     image: postgres:15
