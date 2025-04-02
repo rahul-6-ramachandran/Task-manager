@@ -1,9 +1,7 @@
 Swagger setup
 
-Prisma om with postgresql
-
 JWT signup and login
 
 Task managing apis
 
-Dockerisation of react and postgresql link add in docker server
+redux setup
