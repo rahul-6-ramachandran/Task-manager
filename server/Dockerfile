@@ -10,11 +10,13 @@ COPY package*.json ./
 # Install project dependencies
 RUN npm install
 
+
+RUN npx prisma generate --no-engine
 # Copy all project files to the container
 COPY . .
 
-# Generate Prisma client
-RUN npx prisma generate
+
+
 
 # Expose the application port 
 EXPOSE 7070

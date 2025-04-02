@@ -20,15 +20,23 @@ model Task {
   updatedAt DateTime @updatedAt
   title     String?  
   Description   String @default(" ")
+  status    Status @default(Not_Yet_Started)
   createdBy User  @relation(fields: [userId],references: [id])
   userId Int  @unique
+
 }
 
 model User {
   id      Int      @id @default(autoincrement())
-  email   String?   @unique
-  password String?
+  email   String   @unique
+  password String
   createdAt DateTime @default(now())
     tasks   Task[]
   
+}
+
+enum Status {
+  Completed
+  Started
+  Not_Yet_Started
 }
