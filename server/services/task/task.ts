@@ -60,4 +60,24 @@ export const updateTask = async(body:UpdateTask  )=>{
     }
    
    }
+
+   
+export const deleteTask = async(id : number)=>{
+    try {
+     
+
+       const newTask = await prisma.task.delete({
+        where: {
+             id, 
+        }
+       })
+       return true
+   
+   
+    } catch (error) {
+       console.log(error)
+    }
+   
+   }
+   
    

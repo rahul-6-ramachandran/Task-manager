@@ -47,3 +47,17 @@ export const updateTask = async(body: UpdateTask)=> {
     }
 }
 
+
+export const deleteTask = async(id:Number)=> {
+    try {
+
+        await Axios.delete(`/api/task/${id}`)
+    } catch (error) {
+        const err = error as AxiosError
+       
+            console.log(err.message || "Error Occured")
+        
+    }
+}
+
+

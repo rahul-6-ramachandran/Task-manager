@@ -4,7 +4,7 @@ import { verifyToken } from "../../services/auth/auth";
 import prisma from "../../database/connection";
 import { getUser } from "../../services/jwtauth";
 import e from "express";
-import { createNewTask, updateTask } from "../../services/task/task";
+import { createNewTask, deleteTask, updateTask } from "../../services/task/task";
 
 
 
@@ -13,7 +13,7 @@ const router = Router()
 
 /**
  * @swagger
- * /auth/register:
+ * /task:
  *   get:
  *     summary: Task Fetch
  *     description: Fetching the Tasks of a Logged in User
@@ -71,12 +71,14 @@ router.get("/", async (req:any, res:any) => {
 
 /**
  * @swagger
- * /auth/register:
+ * /task:
  *   get:
  *     summary: Task Fetch
  *     description: Creating a New Task for Logged in user
  *     tags:
  *       - Task
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -84,8 +86,12 @@ router.get("/", async (req:any, res:any) => {
  *           schema:
  *             type: object
  *             properties:
- *              headers:
- *               authorisation : token
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               status:
+ *                 type: string
  *     responses:
  *       200:
  *         content:
@@ -123,12 +129,21 @@ router.post("/", async (req, res) => {
 
 /**
  * @swagger
- * /auth/register:
+ * /task/{id}:
  *   put:
- *     summary: Task Update
- *     description: Update a Task for Logged in user
+ *     summary: Update a Task
+ *     description: Update a specific task for the logged-in user
  *     tags:
  *       - Task
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the task to update
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -136,10 +151,15 @@ router.post("/", async (req, res) => {
  *           schema:
  *             type: object
  *             properties:
- *              headers:
- *               authorisation : token
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               status:
+ *                 type: string
  *     responses:
  *       200:
+ *         description: Successfully updated the task
  *         content:
  *           application/json:
  *             schema:
@@ -148,9 +168,9 @@ router.post("/", async (req, res) => {
  *                 updatedTask:
  *                   type: object
  *       401:
- *         description: Unauthorised User
+ *         description: Unauthorized User
  *       500:
- *         description: Internal server error
+ *         description: Internal Server Error
  */
 
 router.put("/:id", async (req:any, res:any) => {
@@ -180,6 +200,84 @@ router.put("/:id", async (req:any, res:any) => {
                 const updatedTask = await updateTask(body)
 
                 res.status(200).json(updatedTask);
+            }   
+      
+        }
+
+    } catch (error) {
+        res.status(500).json({ message: "Something went wrong" });
+    }
+});
+
+/**
+ * @swagger
+ * /task/{id}:
+ *   delete:
+ *     summary: Update a Task
+ *     description: Update a specific task for the logged-in user
+ *     tags:
+ *       - Task
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the task to update
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Successfully updated the task
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 updatedTask:
+ *                   type: object
+ *       401:
+ *         description: Unauthorized User
+ *       500:
+ *         description: Internal Server Error
+ */
+
+
+router.delete("/:id", async (req:any, res:any) => {
+    try {
+        const authHeader : any =  req.headers.authorization;
+        const {id} = req.params
+        if (!authHeader) {
+            res.status(401).json({ message: "Unauthorised User" });
+        }else{
+
+            const taskId = Number(id)
+            const existingTask = await prisma.task.findUnique({
+                where: { id: taskId },
+            });
+ 
+            
+            if (!existingTask) {
+                // console.log("heeyyyy",existingTask)
+                return res.status(403).json({ message: "Task Not Found" });
+            }else{
+                
+                const updatedTask = await deleteTask(taskId)
+                if(updatedTask)
+                    res.status(200).json();
             }   
       
         }
