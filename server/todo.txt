@@ -1,7 +1,11 @@
-Swagger setup
+Swagger setup for task routes
 
-JWT signup and login
 
 Task managing apis
 
-redux setup
+redux setup 
+
+extra:
+
+toast setup 
+tailwind setup

@@ -34,7 +34,7 @@ const router = Router()
  *                 message:
  *                   type: string
  *                 user:
- *                   type: object
+ *                   token : object
  *       404:
  *         description: User not found
  *       500:
@@ -44,8 +44,8 @@ router.post('/login',async(req: Request,res : Response)=>{
    try {
     const {body} = req
 
-    
-    const user = await findUser(body.email) 
+    console.log(body,"body")
+    const user = await findUser(body) 
     if(!user){
         res.status(404).json({message : "User Does Not Exist"})
    }else{
@@ -105,7 +105,7 @@ router.post('/login',async(req: Request,res : Response)=>{
  *               properties:
  *                 message:
  *                   type: string
- *                 user:
+ *                 token:
  *                   type: object
  *       404:
  *         description: User Already Exists
@@ -130,6 +130,7 @@ router.post('/register',async(req,res)=>{
         res.status(404).json({message : "Please Try Again Later"})
      }else{
         const token = generateToken(newUser);
+
 
         res.status(200).json({ message: "Login Successful", token });
      }

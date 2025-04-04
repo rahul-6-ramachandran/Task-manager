@@ -6,10 +6,10 @@ import bcrypt from "bcryptjs";
 export const findUser = async(body:UserPayload)=> {
     try {
         const {email} = body
+        console.log(email,"email")
+        
         const user = await prisma.user.findUnique({
-            where: {
-                email : email
-            }
+            where: {email}
         })
         return user ;
     } catch (error) {
@@ -41,8 +41,8 @@ const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
 
 
 export const generateToken = (user: any) => {
-    const {userId,email} = user
-    return jwt.sign({userId, email }, JWT_SECRET, { expiresIn: '1d' });
+    const {id,email} = user
+    return jwt.sign({id, email }, JWT_SECRET, { expiresIn: '1d' });
 };
 
 
@@ -55,3 +55,12 @@ export const hashPassword = async (password: string) => {
 export const comparePasswords = async (password: string, hashedPassword: string) => {
     return bcrypt.compare(password, hashedPassword);
 };
+
+
+export const verifyToken = (token: string) => {
+    try {
+      return jwt.verify(token, JWT_SECRET);
+    } catch (error) {
+      return null;
+    }
+  };

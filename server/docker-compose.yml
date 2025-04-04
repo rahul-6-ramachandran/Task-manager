@@ -18,6 +18,8 @@ services:
       - db
     environment:
       DATABASE_URL: "postgresql://admin_user:mysecretpassword@db:5432/mydatabase"
+    env_file:
+      - .env
     ports:
       - "7070:7070"
     volumes:
