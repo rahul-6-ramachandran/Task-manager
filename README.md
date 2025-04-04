@@ -6,18 +6,39 @@ A simple web application that allows users to Add,Update,Delete and View individ
 
 ## Tech Stack
 
-**Client:** React, Tailwind CSS, Redux-Toolkit
+**Client:** React, Tailwind CSS
 
-**Server:** Node, Express , MongoDB, Typescript
+**Server:** Node, Express , PostgreSQL, Typescript,Prisma ORM,
 
 
 ## Features
 
-- Login/Signup
-- Users can add,delete,edit and view tasks
-- Jwt authentication
-- Containerised using Docker
+ Authentication
+Secure JWT-based Login & Signup system for user authentication.
 
+ Task Management
+Users can Create, Edit, Delete, and View tasks seamlessly.
+
+ RESTful API
+Built using Express.js, providing clean and scalable API endpoints.
+
+ Dockerized Architecture
+Entire project is containerized with Docker, including:
+
+Frontend (React)
+
+Backend (Express + Prisma)
+
+PostgreSQL database
+
+ PostgreSQL + Prisma ORM
+Robust data management with Prisma ORM and PostgreSQL.
+
+ Modular Codebase
+Organized project structure for maintainability and scalability.
+
+ Frontend with React
+Clean and responsive UI built using React and TailwindCSS.
 
 ## Backend Apis
 
@@ -25,6 +46,15 @@ Auth
 
 Post - api/auth/login 
 Post - api/auth/register
+
+Task 
+
+Post- api/task
+Get - api/task
+Put - api/task/{id}
+Delete - api/task/{id}
+
+Swagger Api Docs - /api-docs
 
 ## Environment Variables
 
@@ -36,7 +66,7 @@ To run this project, you will need to add the following environment variables to
 
 `JWT_SECRET`
 
-`DB_URL`
+`DATABASE_URL`
 
 ## Run Locally
 
@@ -81,12 +111,48 @@ Start the server
   npm run dev
 ```
 
+## Docker Setup
 
-## Screenshots
+Prerequisites
 
-#### Login and Signup
+- Docker installed on your system.
 
-#### Task View
+- Docker Compose (included with Docker Desktop).
+
+Create .env files (optional but recommended)
+
+```bash
+  DATABASE_URL=postgresql://admin_user:mysecretpassword@db:5432/mydatabase
+```
+
+Run Docker Compose
+
+```bash
+docker-compose up --build
+```
+
+This command will:
+
+ - Build and start the frontend (React) on port 3000.
+
+ - Build and start the backend (Express) on port 7070.
+
+ - Start the PostgreSQL database on port 5432.
+
+Access the App
+
+Service	            URL
+
+Frontend	      http://localhost:3000
+Backend API	    http://localhost:7070
+PostgreSQL	    Accessible internally via Docker network
+
+Stop and Clean Up
+
+```bash
+docker-compose down
+```
+
 
 
 
