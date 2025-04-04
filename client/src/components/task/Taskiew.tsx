@@ -27,6 +27,9 @@ export default function Taskview(){
     <table className="w-full text-sm text-left rtl:text-right text-gray-100 ">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
+            <th scope="col" className="px-6 py-3">
+                    No.
+                </th>
                 <th scope="col" className="px-6 py-3">
                     Task Title
                 </th>
@@ -48,21 +51,28 @@ export default function Taskview(){
             </tr>
         </thead>
         <tbody>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+            {
+                tasks && tasks.length > 0 ? (
+                    tasks?.map((task,index)=>(
+                        <>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Apple MacBook Pro 17"
+                  {index+1}
                 </th>
                 <td className="px-6 py-4">
-                    Silver
+                {task?.title}
                 </td>
                 <td className="px-6 py-4">
-                    Laptop
+                  {task?.status}
                 </td>
                 <td className="px-6 py-4">
-                    $2999
+                   {task.Description}
                 </td>
                 <td className="px-6 py-4">
-                    $2999
+                 { task.createdAt}
+                </td>
+                <td className="px-6 py-4">
+                 { task.updatedAt}
                 </td>
                 <td className="px-6 py-4">
                   <div className="px-3">
@@ -71,6 +81,16 @@ export default function Taskview(){
                   </div>
                 </td>
             </tr>
+                        </>
+                    ))
+                ): (<>
+               <tr className="w-full"> 
+                <th className="text-black flex text-2xl justify-center items-center">               <span className="text-black flex text-2xl justify-center items-center">No Tasks Available.! create New</span>
+                </th>
+               </tr>
+                </>)
+            }
+            
             
         </tbody>
     </table>

@@ -1,6 +1,6 @@
 import {  useState } from "react"
 import {CreateUser} from '../../../common.type'
-import { login, signup } from "../../actions/AuthAction";
+import {  signup } from "../../actions/AuthAction";
 import { useNavigate } from "react-router-dom";
 export default function Signup(){
     const navigate = useNavigate()

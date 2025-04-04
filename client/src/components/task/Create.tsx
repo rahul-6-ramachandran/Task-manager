@@ -1,6 +1,6 @@
 import {  useState } from "react"
-import {CreateNewTask, CreateUser, Status} from '../../../common.type'
-import { login, signup } from "../../actions/AuthAction";
+import {CreateNewTask, Status} from '../../../common.type'
+
 import { useNavigate, useParams } from "react-router-dom";
 import { createNewTask } from "../../actions/TaskActions";
 export default function Create(){

@@ -13,11 +13,11 @@ export type CreateNewTask ={
 export type TaskData ={
     id : number
     title : string
-    description : string
+    Description : string
     userId : number
     status : string
-    createdAt : Date
-    updatedAt : Date
+    createdAt : string
+    updatedAt : string
 }
 
 export enum Status {
