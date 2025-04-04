@@ -13,16 +13,16 @@ A simple web application that allows users to Add,Update,Delete and View individ
 
 ## Features
 
- Authentication
+ Authentication :-
 Secure JWT-based Login & Signup system for user authentication.
 
- Task Management
+ Task Management :-
 Users can Create, Edit, Delete, and View tasks seamlessly.
 
- RESTful API
+ RESTful API :- 
 Built using Express.js, providing clean and scalable API endpoints.
 
- Dockerized Architecture
+ Dockerized Architecture :- 
 Entire project is containerized with Docker, including:
 
 Frontend (React)
@@ -31,13 +31,13 @@ Backend (Express + Prisma)
 
 PostgreSQL database
 
- PostgreSQL + Prisma ORM
+ PostgreSQL + Prisma ORM :-
 Robust data management with Prisma ORM and PostgreSQL.
 
- Modular Codebase
+ Modular Codebase :-
 Organized project structure for maintainability and scalability.
 
- Frontend with React
+ Frontend with React :-
 Clean and responsive UI built using React and TailwindCSS.
 
 ## Backend Apis
