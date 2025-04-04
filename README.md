@@ -16,8 +16,15 @@ A simple web application that allows users to Add,Update,Delete and View individ
 - Login/Signup
 - Users can add,delete,edit and view tasks
 - Jwt authentication
+- Containerised using Docker
 
 
+## Backend Apis
+
+Auth
+
+Post - api/auth/login 
+Post - api/auth/register
 
 ## Environment Variables
 
