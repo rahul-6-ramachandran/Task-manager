@@ -11,7 +11,18 @@ export type CreateNewTask ={
 }
 
 
-export enum Status {
+
+export type UpdateTask ={
+    id : number
+    title : string
+    Description : string
+    userId :  number
+    status : string
+}
+
+
+
+export enum TaskStatus {
     Completed = "Completed",
     Started = "Started",
     NotYetStarted = "Not_Yet_Started"

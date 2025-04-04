@@ -1,22 +1,31 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getAllTask } from "../../actions/TaskActions"
-import { TaskData } from "../../../common.type"
+import { TaskData, UpdateTask } from "../../../common.type"
+import Edit from "./Edit"
 
 export default function Taskview(){
     const {id} = useParams()
     const navigate = useNavigate()
     const [tasks,setTasks] = useState<TaskData[] | []>([])
-
+    const [editTask,setEditTask] = useState(false)
+    const [selectedTask, setSelectedTask] = useState<UpdateTask | null>()
+  
     useEffect(()=>{
+        getAllUserTask()
+    },[editTask])
+   
+    const getAllUserTask = ()=>{
         getAllTask()
         .then((res)=>{
             setTasks(res?.tasks)
             console.log(res?.tasks)
         })
-    },[])
-  
-
+    }
+    const handleEditClick = (task : UpdateTask) => {
+        setSelectedTask(task);
+        setEditTask(true);
+      };
     return(<>
     <div className="h-screen p-4 ">
    <div className="text-end bg-white sticky-top">
@@ -55,7 +64,7 @@ export default function Taskview(){
                 tasks && tasks.length > 0 ? (
                     tasks?.map((task,index)=>(
                         <>
-                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                        <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   {index+1}
                 </th>
@@ -69,18 +78,21 @@ export default function Taskview(){
                    {task.Description}
                 </td>
                 <td className="px-6 py-4">
-                 { task.createdAt}
+                 { new Date(task.updatedAt).toLocaleString()}
                 </td>
                 <td className="px-6 py-4">
-                 { task.updatedAt}
+                 { new Date(task.updatedAt).toLocaleString()}
                 </td>
                 <td className="px-6 py-4">
                   <div className="px-3">
                   <button type="button" className="text-white px-2 bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</button>
-                  <button type="button" className="text-white px-2 bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Edit</button>
+                  <button type="button"  onClick={()=>handleEditClick(task)} className="text-white px-2 bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Edit</button>
                   </div>
                 </td>
+               
             </tr>
+            
+
                         </>
                     ))
                 ): (<>
@@ -94,11 +106,24 @@ export default function Taskview(){
             
         </tbody>
     </table>
-</div>
+    
+    {editTask && selectedTask && (
+        <div className="fixed inset-0 flex items-center justify-center  bg-white z-50">
+                    <Edit 
+                    title={selectedTask?.title}
+                    description = {selectedTask?.Description}
+                    userId= {selectedTask.userId}
+                    status = {selectedTask.status}
+                    taskId = {selectedTask.id}
+                    setEditTask = {setEditTask}
+                        />
+                        </div>
+                    )}
+                    </div>
+
+
         </div>
-
-        
-
+       
     </div>
     </>)
 }

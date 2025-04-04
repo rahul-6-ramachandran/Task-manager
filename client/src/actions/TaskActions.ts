@@ -1,5 +1,5 @@
 import { AxiosError } from "axios"
-import { CreateNewTask } from "../../common.type"
+import { CreateNewTask, UpdateTask } from "../../common.type"
 import Axios from "../config/Axios"
 
 
@@ -31,3 +31,19 @@ export const getAllTask = async()=> {
         
     }
 }
+
+
+
+export const updateTask = async(body: UpdateTask)=> {
+    try {
+
+        const {data} = await Axios.put(`/api/task/${body.id}`,body)
+        return data
+    } catch (error) {
+        const err = error as AxiosError
+       
+            console.log(err.message || "Error Occured")
+        
+    }
+}
+

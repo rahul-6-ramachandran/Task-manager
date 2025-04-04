@@ -4,7 +4,7 @@ import { verifyToken } from "../../services/auth/auth";
 import prisma from "../../database/connection";
 import { getUser } from "../../services/jwtauth";
 import e from "express";
-import { createNewTask } from "../../services/task/task";
+import { createNewTask, updateTask } from "../../services/task/task";
 
 
 
@@ -114,6 +114,74 @@ router.post("/", async (req, res) => {
         const newTask = await createNewTask(body)
 
         res.status(200).json(newTask);
+        }
+
+    } catch (error) {
+        res.status(500).json({ message: "Something went wrong" });
+    }
+});
+
+/**
+ * @swagger
+ * /auth/register:
+ *   put:
+ *     summary: Task Update
+ *     description: Update a Task for Logged in user
+ *     tags:
+ *       - Task
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *              headers:
+ *               authorisation : token
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 updatedTask:
+ *                   type: object
+ *       401:
+ *         description: Unauthorised User
+ *       500:
+ *         description: Internal server error
+ */
+
+router.put("/:id", async (req:any, res:any) => {
+    try {
+        const authHeader : any =  req.headers.authorization;
+        const {userId} = req.body
+        const {id} = req.params
+        if (!authHeader) {
+            
+             res.status(401).json({ message: "Unauthorised User" });
+        }else{
+
+            const taskId = Number(id)
+            const existingTask = await prisma.task.findUnique({
+                where: { id: taskId },
+            });
+ 
+            
+            if (!existingTask || existingTask.userId !== userId) {
+                // console.log("heeyyyy",existingTask)
+                return res.status(403).json({ message: "Unauthorized to update this task" });
+            }else{
+                const body = {
+                    ...req.body,
+                    id : taskId
+                }
+                const updatedTask = await updateTask(body)
+
+                res.status(200).json(updatedTask);
+            }   
+      
         }
 
     } catch (error) {

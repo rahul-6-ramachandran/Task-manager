@@ -25,3 +25,12 @@ export enum Status {
     Started = "Started",
     NotYetStarted = "Not_Yet_Started"
 }
+
+
+export type UpdateTask ={
+    id : number
+    title : string
+    Description : string
+    userId :  number
+    status : string
+}
