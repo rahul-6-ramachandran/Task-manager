@@ -8,6 +8,8 @@ WORKDIR /app
 COPY package*.json ./
 
 COPY prisma ./prisma
+
+COPY . .
 # Install project dependencies
 RUN npm install
 
@@ -15,7 +17,7 @@ RUN npx prisma generate --schema=prisma/schema.prisma
 
 # RUN npx prisma generate --no-engine
 # Copy all project files to the container
-COPY . .
+
 
 
 

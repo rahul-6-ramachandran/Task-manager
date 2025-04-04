@@ -1,8 +1,7 @@
-import {  useEffect, useState } from "react"
-import {CreateNewTask, Status, UpdateTask} from '../../../common.type'
+import {   useState } from "react"
+import { Status, UpdateTask} from '../../../common.type'
 
-import { useNavigate, useParams } from "react-router-dom";
-import { createNewTask, getAllTask, updateTask } from "../../actions/TaskActions";
+import {  getAllTask, updateTask } from "../../actions/TaskActions";
 export default function Edit(
     { 
         title, 
@@ -14,7 +13,7 @@ export default function Edit(
         
     }:any
 ){
-    const navigate = useNavigate()
+   
 
     const [formfields,setFormFields] = useState<UpdateTask>({
         title : title,
