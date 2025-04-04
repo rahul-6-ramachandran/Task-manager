@@ -3,8 +3,10 @@ import {CreateNewTask, Status} from '../../../common.type'
 
 import { useNavigate, useParams } from "react-router-dom";
 import { createNewTask } from "../../actions/TaskActions";
+import { useAuth } from "../../context/AuthContext";
 export default function Create(){
     const navigate = useNavigate()
+        const user = useAuth()
     const {id} = useParams()
     const [formfields,setFormFields] = useState<CreateNewTask>({
         title :"",
@@ -41,7 +43,7 @@ export default function Create(){
 
     return(
         <>
-        
+     {!user ? navigate('/login') :(    
 <div className="flex flex-col gap-0 h-screen justify-center container items-center ">
 
 <form className="flex flex-col gap-2 max-w-md mx-auto" onSubmit={(e:any)=> hanleSubmit(e)}>
@@ -64,7 +66,7 @@ export default function Create(){
 </form>
 
 </div>
-        
+     )}
         </>
     )
 }

@@ -14,6 +14,7 @@ export const login = async(body: CreateUser)=> {
     } catch (error) {
         const err = error as AxiosError
         if(err.message){
+            alert("Invalid Credentials")
             console.log(err.message || "Login Failed")
         }
     }
