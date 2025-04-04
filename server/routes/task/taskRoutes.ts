@@ -72,9 +72,9 @@ router.get("/", async (req:any, res:any) => {
 /**
  * @swagger
  * /task:
- *   get:
- *     summary: Task Fetch
- *     description: Creating a New Task for Logged in user
+ *   post:
+ *     summary: Task Submit
+ *     description: Creating a New Task for the logged-in user
  *     tags:
  *       - Task
  *     security:
@@ -94,6 +94,7 @@ router.get("/", async (req:any, res:any) => {
  *                 type: string
  *     responses:
  *       200:
+ *         description: Successfully created task
  *         content:
  *           application/json:
  *             schema:
@@ -102,18 +103,18 @@ router.get("/", async (req:any, res:any) => {
  *                 newTask:
  *                   type: object
  *       401:
- *         description: No token provided 
+ *         description: No token provided
  *       500:
  *         description: Internal server error
  */
 
-router.post("/", async (req, res) => {
+router.post("/", async (req:any, res:any) => {
     try {
         const authHeader : any =  req.headers.authorization;
         const {body} = req
 
         if (!authHeader) {
-             res.status(401).json({ message: "No token provided" });
+            return res.status(401).json({ message: "No token provided" });
         }else{
             
         

@@ -1,8 +1,13 @@
-import express, { Request, Response, Router } from "express"
-import { comparePasswords, createNewUser, findUser, generateToken, hashPassword,  } from "../../services/auth/auth"
+import express, { Request, Response, Router } from "express";
+import {
+  comparePasswords,
+  createNewUser,
+  findUser,
+  generateToken,
+  hashPassword,
+} from "../../services/auth/auth";
 
-const router = Router()
-
+const router = Router();
 
 /**
  * @swagger
@@ -40,41 +45,33 @@ const router = Router()
  *       500:
  *         description: Internal server error
  */
-router.post('/login',async(req: Request,res : Response)=>{
-   try {
-    const {body} = req
+router.post("/login", async (req: Request, res: Response) => {
+  try {
+    const { body } = req;
 
-    console.log(body,"body")
-    const user = await findUser(body) 
-    if(!user){
-        res.status(404).json({message : "User Does Not Exist"})
-   }else{
-
-    const isMatch = await comparePasswords(body.password, user.password);
-    if (!isMatch) {
-         res.status(401).json({ message: "Invalid credentials" });
-    }else{
+    console.log(body, "body");
+    const user = await findUser(body);
+    if (!user) {
+      res.status(404).json({ message: "User Does Not Exist" });
+    } else {
+      const isMatch = await comparePasswords(body.password, user.password);
+      if (!isMatch) {
+        res.status(401).json({ message: "Invalid credentials" });
+      } else {
         const sanitizedUser = {
-            ...user,
-            password: "", // Hide password
+          ...user,
+          password: "", // Hide password
         };
 
         const token = generateToken(sanitizedUser);
 
-    
         res.status(200).json({ message: "Login Successful", token });
+      }
     }
-      
-    }
-    
-  
-
-   } catch (error) {
-         res.status(500).json({ message: "Something Went Wrong" });
-   }
-})
-
-
+  } catch (error) {
+    res.status(500).json({ message: "Something Went Wrong" });
+  }
+});
 
 /**
  * @swagger
@@ -112,38 +109,31 @@ router.post('/login',async(req: Request,res : Response)=>{
  *       500:
  *         description: Internal server error
  */
-router.post('/register',async(req,res)=>{
-    try {
-     const {body} = req
-     const user = await findUser(body) 
-     if(user){
-         res.status(404).json({message : "User Already Exists"})
-     }else{
-        const hashedPassword = await hashPassword(body.password);
-        const newBody  = {
+router.post("/register", async (req, res) => {
+  try {
+    const { body } = req;
+    const user = await findUser(body);
+    if (user) {
+      res.status(404).json({ message: "User Already Exists" });
+    } else {
+      const hashedPassword = await hashPassword(body.password);
+      const newBody = {
         ...body,
-        password : hashedPassword
-        }
-        const newUser = await createNewUser(newBody)
-        
-     if(!newUser){
-        res.status(404).json({message : "Please Try Again Later"})
-     }else{
+        password: hashedPassword,
+      };
+      const newUser = await createNewUser(newBody);
+
+      if (!newUser) {
+        res.status(404).json({ message: "Please Try Again Later" });
+      } else {
         const token = generateToken(newUser);
 
-
         res.status(200).json({ message: "Login Successful", token });
-     }
-  
-     }
-     
-     
- 
-    } catch (error) {
-        res.status(500).json({ message: "Something Went Wrong" });
+      }
     }
- })
+  } catch (error) {
+    res.status(500).json({ message: "Something Went Wrong" });
+  }
+});
 
-
- 
- export default router
+export default router;
