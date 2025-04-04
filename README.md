@@ -42,19 +42,7 @@ Clean and responsive UI built using React and TailwindCSS.
 
 ## Backend Apis
 
-Auth
-
-Post - api/auth/login 
-Post - api/auth/register
-
-Task 
-
-Post- api/task
-Get - api/task
-Put - api/task/{id}
-Delete - api/task/{id}
-
-Swagger Api Docs - /api-docs
+Swagger Api Docs - [/api-docs](http://localhost:7070/api-docs (when the backend is running)) 
 
 ## Environment Variables
 
